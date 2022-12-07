@@ -37,6 +37,7 @@ const QuestionDetails = (props) => {
     const [selectedOption, setselectedOption] = useState("");
     const  { user, question, users, dispatch } = props;
 
+    console.log(question);
     useEffect(() => {
         if(user === undefined) {
             navigate("/")
@@ -68,14 +69,14 @@ const QuestionDetails = (props) => {
             isQuestionAnswered  ?
             <div>
                 <div>
+                    <p>{question?.optionOne?.text} {selectedOption === 'optionOne' ? '- Selected Option': ''}</p>
                     <p>Peoples who answer: {peopleHowVotedOptionOne?.usersCount}</p> 
                     <p>Pergentage: {peopleHowVotedOptionOne?.percentage}</p>
-                    <p>{selectedOption === 'optionOne' ? 'Ok': ''}</p>
                 </div>
                 <div>
+                    <p>{question?.optionTwo?.text} {selectedOption === 'optionTwo' ? '- Selected Option': ''}</p>
                     <p>Peoples who answer: {peopleHowVotedOptionTwo?.usersCount}</p>
                     <p>Pergentage: {peopleHowVotedOptionTwo?.percentage}</p>
-                    <p>{selectedOption === 'optionTwo' ? 'Ok': ''}</p>
                 </div>
             </div>
             : 
