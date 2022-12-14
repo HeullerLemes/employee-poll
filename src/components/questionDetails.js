@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { handleVote } from "../actions/users";
 import { useEffect } from "react";
 import { useState } from "react";
+import { authenticateUser } from "../actions/autheticateUser";
 
 const withRouter = (Component) => {
     const ComponentWithRouterProp = (props) => {
@@ -16,16 +17,20 @@ const withRouter = (Component) => {
 };
 
 const howManyPeopleWhoVotedOption = (option, users, question) => {
-    let usersCount = 0;
+    let usersThatVoteForOptionCount = 0;
+    let usersThatVotedCount = 0;
     let percentage = 0;
     for(let user of users) {
-        if(user.answers[question.id] && user.answers[question.id] === option) {
-            usersCount++;
+        if(user.answers[question.id]) {
+            usersThatVotedCount++;
+            if(user.answers[question.id] === option) {
+                usersThatVoteForOptionCount++;
+            }
         }
     }
-    percentage = (usersCount * 100) / users.length;
+    percentage = Math.floor((usersThatVoteForOptionCount * 100) / usersThatVotedCount);
     return {
-        usersCount,
+        usersThatVoteForOptionCount,
         percentage
     };
 }
@@ -37,7 +42,6 @@ const QuestionDetails = (props) => {
     const [selectedOption, setselectedOption] = useState("");
     const  { user, question, users, dispatch } = props;
 
-    console.log(question);
     useEffect(() => {
         if(user === undefined) {
             navigate("/")
@@ -55,11 +59,12 @@ const QuestionDetails = (props) => {
     const selectOption = (selectedOption) => {
         dispatch(handleVote(
                 {
-                    authedUser: user.id, 
+                    authedUser: user, 
                     qid: question.id, 
                     answer: selectedOption
                 }
             ));
+            dispatch(authenticateUser(users[user.id]))
     };
     const avatarURL = users.find((user) => user.id === question.author).avatarURL;
     return (
@@ -69,13 +74,13 @@ const QuestionDetails = (props) => {
             isQuestionAnswered  ?
             <div>
                 <div>
-                    <p>{question?.optionOne?.text} {selectedOption === 'optionOne' ? '- Selected Option': ''}</p>
-                    <p>Peoples who answer: {peopleHowVotedOptionOne?.usersCount}</p> 
+                    <p style={{color: selectedOption === 'optionOne' ? 'green':''}}>{question?.optionOne?.text} {selectedOption === 'optionOne' ? '- Selected Option': ''}</p>
+                    <p>Peoples who answer: {peopleHowVotedOptionOne?.usersThatVoteForOptionCount}</p> 
                     <p>Pergentage: {peopleHowVotedOptionOne?.percentage}</p>
                 </div>
                 <div>
                     <p>{question?.optionTwo?.text} {selectedOption === 'optionTwo' ? '- Selected Option': ''}</p>
-                    <p>Peoples who answer: {peopleHowVotedOptionTwo?.usersCount}</p>
+                    <p>Peoples who answer: {peopleHowVotedOptionTwo?.usersThatVoteForOptionCount}</p>
                     <p>Pergentage: {peopleHowVotedOptionTwo?.percentage}</p>
                 </div>
             </div>

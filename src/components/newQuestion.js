@@ -12,7 +12,7 @@ const NewQuestion = (props) => {
         if(user === undefined) {
             navigate("/")
         }
-      }, []);
+      }, [navigate, user]);
 
     const [optionOne, setOptionOne] = useState("");
     const [optionTwo, setOptionTwo] = useState("");
@@ -40,7 +40,7 @@ const NewQuestion = (props) => {
   
       setOptionOne("");
       setOptionTwo("");
-      navigate("/");
+      navigate("/home");
 
     };
     return (

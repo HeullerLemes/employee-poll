@@ -69,9 +69,9 @@ const App = ({user, currentPath, dispatch}) => {
   );
 };
 
-const mapStateToProps = ({ authenticatedUser }, props) => {
+const mapStateToProps = ({ authenticatedUser, users }, props) => {
   return {
-    user: authenticatedUser,
+    user: users[Object.keys(users).find((userId) => userId === authenticatedUser.id)],
     currentPath: props.router.location.pathname
   }
 };

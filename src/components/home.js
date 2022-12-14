@@ -22,12 +22,16 @@ const Home = (props) => {
             setView('unanswered');
         }
       }
-      const compareAnswer = (answerA, answerB) => {
+    const compareAnswer = (answerA, answerB) => {
         return questions[answerA].timestamp - questions[answerB].timestamp;
     }
 
-      const orderedUnansweredQuestions = unansweredQuestions.sort(compareAnswer);
-      const orderedAnsweredQuestions = answeredQuestions.sort(compareAnswer);
+    const getDate = (timestamp) => {
+        return new Date(timestamp).toUTCString();
+    }
+
+    const orderedUnansweredQuestions = unansweredQuestions.sort(compareAnswer);
+    const orderedAnsweredQuestions = answeredQuestions.sort(compareAnswer);
 
     return(
         <div>
@@ -40,7 +44,7 @@ const Home = (props) => {
                         orderedUnansweredQuestions.map((unansweredQuestion) => (
                             <div key={unansweredQuestion}>
                                 <Link to={`/questions/${unansweredQuestion}`}>
-                                    <p>{questions[unansweredQuestion].author} - {questions[unansweredQuestion].id}</p>
+                                    <p>{questions[unansweredQuestion].author} - {questions[unansweredQuestion].id} - {getDate(questions[unansweredQuestion].timestamp)}</p>
                                 </Link>
                             </div>
                         ))
@@ -53,7 +57,7 @@ const Home = (props) => {
                         orderedAnsweredQuestions.sort(compareAnswer).map((answeredQuestion) => (
                             <div key={answeredQuestion}>
                                 <Link to={`/questions/${answeredQuestion}`}>
-                                    <p>{questions[answeredQuestion].author} - {questions[answeredQuestion].id}</p>
+                                    <p>{questions[answeredQuestion].author} - {questions[answeredQuestion].id} - {getDate(questions[answeredQuestion].timestamp)}</p>
                                 </Link>
                             </div>
                         ))
@@ -64,12 +68,13 @@ const Home = (props) => {
     )
 };
 
-const mapStateToProps = ({ authenticatedUser, questions }) => {
-    const answeredQuestions = Object.keys(authenticatedUser.answers);
+const mapStateToProps = ({ authenticatedUser, questions, users }) => {
+    const user = users[Object.keys(users).find((userId) => userId === authenticatedUser.id)];
+    const answeredQuestions = Object.keys(user.answers);
     const unansweredQuestions = Object.keys(questions).filter((question) => !answeredQuestions.find((answeredQuestion) => answeredQuestion === question));
 
     return {
-        user: authenticatedUser,
+        user,
         answeredQuestions,
         unansweredQuestions,
         questions

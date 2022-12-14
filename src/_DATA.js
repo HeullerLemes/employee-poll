@@ -187,10 +187,10 @@ export function _saveQuestionAnswer ({ authedUser, qid, answer }) {
     setTimeout(() => {
       users = {
         ...users,
-        [authedUser]: {
-          ...users[authedUser],
+        [authedUser.id]: {
+          ...users[authedUser.id],
           answers: {
-            ...users[authedUser].answers,
+            ...users[authedUser.id].answers,
             [qid]: answer
           }
         }
@@ -201,7 +201,7 @@ export function _saveQuestionAnswer ({ authedUser, qid, answer }) {
           ...questions[qid],
           [answer]: {
             ...questions[qid][answer],
-            votes: questions[qid][answer].votes.concat([authedUser])
+            votes: questions[qid][answer].votes.concat([authedUser.id])
           }
         }
       }

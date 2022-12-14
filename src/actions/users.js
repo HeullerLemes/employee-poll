@@ -14,7 +14,7 @@ export function receiveUsers(users) {
 export function vote({ authedUser, qid, answer }) {
   return {
     type: ANSWER_QUESTION,
-    authedUser,
+    authedUser: authedUser.id,
     qid,
     answer
   }
