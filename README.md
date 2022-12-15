@@ -13,7 +13,7 @@ You will need node 16 installed on your machine to run this project
 ### Installing
 
 ```
-npm i
+npm install
 ```
 
 ```
