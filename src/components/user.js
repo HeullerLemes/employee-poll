@@ -7,6 +7,7 @@ const User = (props) => {
     const { dispatch, user } = props;
     const navigateToHome = () => {
       dispatch(authenticateUser(user));
+      localStorage.setItem('user', JSON.stringify(user));
       navigate("/home");
     }
     return (

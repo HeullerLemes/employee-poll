@@ -40,10 +40,10 @@ const QuestionDetails = (props) => {
     const [answer, setAnswer] = useState("teste");
     const [isQuestionAnswered, setIsQuestionAnswered] = useState("");
     const [selectedOption, setselectedOption] = useState("");
-    const  { user, question, users, dispatch } = props;
+    const { user, question, users, dispatch } = props;
 
     useEffect(() => {
-        if(user === undefined) {
+        if(user === undefined && !localStorage.getItem('user')) {
             navigate("/")
         } else if(question === undefined) {
             navigate("/notfound");
@@ -66,7 +66,7 @@ const QuestionDetails = (props) => {
             ));
             dispatch(authenticateUser(users[user.id]))
     };
-    const avatarURL = users.find((user) => user.id === question.author).avatarURL;
+    const avatarURL = users.find((user) => user.id === question.author)?.avatarURL;
     return (
     <div>
         <h1>Would You Rather</h1>

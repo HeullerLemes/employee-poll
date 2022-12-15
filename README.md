@@ -10,6 +10,16 @@ This project is a system where users can loggin and answer polls, visualize resu
 You will need node 16 installed on your machine to run this project
 ```
 
+### Installing
+
+```
+npm i
+```
+
+```
+npm run start
+```
+
 ## Available Scripts
 
 In the project directory, you can run:

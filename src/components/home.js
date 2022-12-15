@@ -30,8 +30,8 @@ const Home = (props) => {
         return new Date(timestamp).toUTCString();
     }
 
-    const orderedUnansweredQuestions = unansweredQuestions.sort(compareAnswer);
-    const orderedAnsweredQuestions = answeredQuestions.sort(compareAnswer);
+    const orderedUnansweredQuestions = unansweredQuestions.sort(compareAnswer).reverse();
+    const orderedAnsweredQuestions = answeredQuestions.sort(compareAnswer).reverse();
 
     return(
         <div>
@@ -54,7 +54,7 @@ const Home = (props) => {
                 <div data-testid="answered">
                     <h1>Answered questions</h1>
                     {
-                        orderedAnsweredQuestions.sort(compareAnswer).map((answeredQuestion) => (
+                        orderedAnsweredQuestions.map((answeredQuestion) => (
                             <div key={answeredQuestion}>
                                 <Link to={`/questions/${answeredQuestion}`}>
                                     <p>{questions[answeredQuestion].author} - {questions[answeredQuestion].id} - {getDate(questions[answeredQuestion].timestamp)}</p>

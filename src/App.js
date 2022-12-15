@@ -12,7 +12,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { authenticateUser } from './actions/autheticateUser';
 import NotFoundPage from './components/404';
 
-
 const withRouter = (Component) => {
   const ComponentWithRouterProp = (props) => {
     let location = useLocation();
@@ -24,15 +23,20 @@ const withRouter = (Component) => {
   return ComponentWithRouterProp;
 };
 
-const App = ({user, currentPath, dispatch}) => {
+const App = ({user, currentPath, users, dispatch}) => {
   let navigate = useNavigate();
 
   useEffect(() => {
     dispatch(handleInitialData());
+    const loggedUser = localStorage.getItem('user');
+    if(loggedUser) {
+      dispatch(authenticateUser(JSON.parse(loggedUser)));
+    }
   }, [dispatch]);
 
   const loggout = () => {
     dispatch(authenticateUser(null));
+    localStorage.clear();
     navigate("/")
   }
 
@@ -72,7 +76,8 @@ const App = ({user, currentPath, dispatch}) => {
 const mapStateToProps = ({ authenticatedUser, users }, props) => {
   return {
     user: users[Object.keys(users).find((userId) => userId === authenticatedUser.id)],
-    currentPath: props.router.location.pathname
+    currentPath: props.router.location.pathname,
+    users
   }
 };
 
